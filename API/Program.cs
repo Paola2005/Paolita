@@ -1,3 +1,6 @@
+using System.Reflection;
+using API.Extension;
+using AspNetCoreRateLimit;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,15 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.ConfigureRatelimiting();
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+builder.Services.ConfigureCore();
+builder.Services.AddApplicationServices();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<PaolitaContext>(options =>
+
+builder.Services.AddDbContext<PaolitaContext>(options=>
 {
-    string connectionString = builder.Configuration.GetConnectionString("ConexMysql");
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    string connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+    options.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString));
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,24 +32,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-using (var scope = app.Services.CreateScope())
-{
-	var services = scope.ServiceProvider;
-	var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-	try
-	{
-		var context = services.GetRequiredService<PaolitaContext>();
-		await context.Database.MigrateAsync();
-	}
-	catch (Exception ex)
-	{
-		var _logger = loggerFactory.CreateLogger<Program>();
-		_logger.LogError(ex, "Ocurrio un error durante la migracion");
-	}
-} 
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
-
+app.UseIpRateLimiting();
 app.UseAuthorization();
 
 app.MapControllers();

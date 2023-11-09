@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace API.Profiles
 {
-    public class BaseEntity
+    public class MappingProfiles
     {
-        public int Id { get; set; }
+        
     }
 }
