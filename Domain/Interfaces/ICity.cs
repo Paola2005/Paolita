@@ -8,6 +8,8 @@ namespace Domain.Interfaces
 {
     public interface ICity:IGenericRepository<City>
     {
-        
+        Task<List<Customer>>GetCustomerByCityId(int cityId);
+        Task<City>GetId(int id);
+        Task<IEnumerable<City>> GetAllAsync2();
     }
 }

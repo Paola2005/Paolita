@@ -12,5 +12,6 @@ namespace API.Dto
    
     public string Name { get; set; } 
     public int IdstateFk { get; set; }
+    public List<CustomerDto> Customers { get; set; }
     }
 }

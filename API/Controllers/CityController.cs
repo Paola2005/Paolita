@@ -25,8 +25,22 @@ namespace API.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<CityDto>>> Get()
     {
-        var Cityes = await _unitOfWork.Cities.GetAllAsync();
+        var Cityes = await _unitOfWork.Cities.GetAllAsync2();
         return _mapper.Map<List<CityDto>>(Cityes);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CityDto>> Get(int id)
+    {
+        var City = await _unitOfWork.Cities.GetId(id);
+        if (City == null)
+        {
+            return NotFound();
+        }
+        return _mapper.Map<CityDto>(City);
     }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -42,19 +56,6 @@ namespace API.Controllers
         }
         CityDto.Id = City.Id;
         return CreatedAtAction(nameof(Post), new { id = CityDto.Id }, CityDto);
-    }
-    [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CityDto>> Get(int id)
-    {
-        var City = await _unitOfWork.Cities.GetByIdAsync(id);
-        if (City == null)
-        {
-            return NotFound();
-        }
-        return _mapper.Map<CityDto>(City);
     }
 
     [HttpPut("{id}")]
@@ -75,7 +76,7 @@ namespace API.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var City = await _unitOfWork.Cities.GetByIdAsync(id);
+        var City = await _unitOfWork.Cities.GetId(id);
         if (City == null)
         {
             return NotFound();
