@@ -44,7 +44,7 @@ namespace API.Extension
             });
         }
 
-        // Método para configurar controladores
+
         public static void ConfigureControllers(this IServiceCollection services)
         {
             services.AddControllers()

@@ -10,6 +10,5 @@ public partial class Country:BaseEntity
 
     public string Name { get; set; } = null!;
 
-    [JsonIgnore]
     public virtual ICollection<State> States { get; set; }
 }

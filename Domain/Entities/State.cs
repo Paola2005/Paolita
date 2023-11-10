@@ -12,7 +12,7 @@ public partial class State:BaseEntity
 
     public int IdcountryFk { get; set; }
 
-[JsonIgnore]
+
     public virtual ICollection<City> Cities { get; set; }
 
     [JsonIgnore]
