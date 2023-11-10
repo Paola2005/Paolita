@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(PaolitaContext))]
-    [Migration("20231107180345_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231109233537_Create")]
+    partial class Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

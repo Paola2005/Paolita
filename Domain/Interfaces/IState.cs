@@ -8,6 +8,7 @@ namespace Domain.Interfaces
 {
     public interface IState:IGenericRepository<State>
     {
-        
+        Task<List<City>> GetCityByStateIdAsync(int stateId);
+        Task<State> GetByIdAsync2(int id);
     }
 }

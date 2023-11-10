@@ -32,5 +32,9 @@ public partial class PaolitaContext : DbContext
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        public async Task<int> SaveChangeAsync()
+        {
+            return await base.SaveChangesAsync();
+        }
 
 }
